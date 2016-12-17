@@ -4,29 +4,30 @@ import requests
 import logging
 import os
 import json
+import click
 
 
 class OpenFigi:
     id_types = {'ID_ISIN': 'ISIN',
-        'ID_BB_UNIQUE': 'Unique Bloomberg Identifier',
-        'ID_SEDOL': 'Sedol Number',
-        'ID_COMMON': 'Common Code',
-        'ID_WERTPAPIER': 'Wertpapierkennnummer/WKN',
-        'ID_CUSIP': 'CUSIP',
-        'ID_BB': 'ID BB',
-        'ID_ITALY': 'Italian Identifier Number',
-        'ID_EXCH_SYMBOL': 'Local Exchange Security Symbol',
-        'ID_FULL_EXCHANGE_SYMBOL': 'Full Exchange Symbol',
-        'COMPOSITE_ID_BB_GLOBAL': 'Composite Financial Instrument Global Identifier',
-        'ID_BB_GLOBAL_SHARE_CLASS_LEVEL': 'Share Class Financial Instrument Global Identifier',
-        'ID_BB_SEC_NUM_DES': 'Security ID Number Description',
-        'ID_BB_GLOBAL': 'Financial Instrument Global Identifier (FIGI)',
-        'TICKER': 'Ticker',
-        'ID_CUSIP_8_CHR': 'CUSIP (8 Characters Only)',
-        'OCC_SYMBOL': 'OCC Symbol',
-        'UNIQUE_ID_FUT_OPT': 'Unique Identifier for Future Option',
-        'OPRA_SYMBOL': 'OPRA Symbol',
-        'TRADING_SYSTEM_IDENTIFIER': 'Trading System Identifier'}
+                'ID_BB_UNIQUE': 'Unique Bloomberg Identifier',
+                'ID_SEDOL': 'Sedol Number',
+                'ID_COMMON': 'Common Code',
+                'ID_WERTPAPIER': 'Wertpapierkennnummer/WKN',
+                'ID_CUSIP': 'CUSIP',
+                'ID_BB': 'ID BB',
+                'ID_ITALY': 'Italian Identifier Number',
+                'ID_EXCH_SYMBOL': 'Local Exchange Security Symbol',
+                'ID_FULL_EXCHANGE_SYMBOL': 'Full Exchange Symbol',
+                'COMPOSITE_ID_BB_GLOBAL': 'Composite Financial Instrument Global Identifier',
+                'ID_BB_GLOBAL_SHARE_CLASS_LEVEL': 'Share Class Financial Instrument Global Identifier',
+                'ID_BB_SEC_NUM_DES': 'Security ID Number Description',
+                'ID_BB_GLOBAL': 'Financial Instrument Global Identifier (FIGI)',
+                'TICKER': 'Ticker',
+                'ID_CUSIP_8_CHR': 'CUSIP (8 Characters Only)',
+                'OCC_SYMBOL': 'OCC Symbol',
+                'UNIQUE_ID_FUT_OPT': 'Unique Identifier for Future Option',
+                'OPRA_SYMBOL': 'OPRA Symbol',
+                'TRADING_SYSTEM_IDENTIFIER': 'Trading System Identifier'}
 
     def __init__(self, key=None):
         self.logger = logging.getLogger(__name__)
@@ -75,15 +76,26 @@ class OpenFigi:
         return response.json()
 
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-
+@click.command()
+@click.argument('id_type')
+@click.argument('id_value')
+@click.option('--exchange_code', default='', help='An optional exchange code if it applies(cannot use with mic_code).')
+@click.option('--mic_code', default='',
+              help='An optional ISO market identification code(MIC) if it applies(cannot use with exchange_code).')
+@click.option('--currency', default='', help='An optional currency if it applies.')
+def call_figi(id_type, id_value, exchange_code, mic_code, currency):
     key = None
     if 'openfigi_key' in os.environ:
         key = os.environ['openfigi_key']
         logger.info('openfigi_key variable not present in env. Using anonymous access.')
     figi = OpenFigi(key)
-    figi.enqueue_request('ID_WERTPAPIER', '851399')
+    figi.enqueue_request(id_type, id_value, exchange_code, mic_code, currency)
     text = figi.fetch_response()
-    print(json.dumps(text, sort_keys=True, indent=4))
+    click.echo(json.dumps(text, sort_keys=True, indent=4))
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    call_figi()
