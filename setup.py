@@ -14,7 +14,7 @@ setup(
     long_description=readme,
     author='Julian Wergieluk',
     author_email='julian@wergieluk.com',
-    url='https://github.com/wergieluk/openfigi',
+    url='https://github.com/jwergieluk/openfigi',
     license=license,
     packages=find_packages(),
     classifiers=[
