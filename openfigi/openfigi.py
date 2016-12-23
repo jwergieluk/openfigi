@@ -35,6 +35,7 @@ class OpenFigi:
         self.api_key = key
         self.headers = {'Content-Type': 'text/json', 'X-OPENFIGI-APIKEY': key}
         self.data = []
+        self.max_tickers_per_request = 100
 
     def enqueue_request(self, id_type, id_value, exchange_code='', mic_code='', currency=''):
         query = {'idType': id_type, 'idValue': id_value}
@@ -51,7 +52,6 @@ class OpenFigi:
         self.data.append(query)
 
     def fetch_response(self):
-        self.logger.debug(self.data)
         response = requests.post(self.url, json=self.data, headers=self.headers)
         try:
             response.raise_for_status()
@@ -73,7 +73,16 @@ class OpenFigi:
             if response.status_code == 500:
                 self.logger.error('Internal Server Error.')
             return None
-        return response.json()
+
+        response_list = response.json()
+        if len(response_list) == len(self.data):
+            for (i, item) in enumerate(response_list):
+                item.update(self.data[i])
+        else:
+            self.logger.warning('Number of request and response items do not match. Dumping results only.')
+
+        self.data.clear()
+        return response_list
 
 
 @click.command()
@@ -84,9 +93,19 @@ class OpenFigi:
               help='An optional ISO market identification code(MIC) if it applies(cannot use with exchange_code).')
 @click.option('--currency', default='', help='An optional currency if it applies.')
 def call_figi(id_type, id_value, exchange_code, mic_code, currency):
+    """
+    Calls OpenFIGI API with the specified arguments
+
+    ID_TYPE must be one of the following:
+    ID_ISIN, ID_BB_UNIQUE, ID_SEDOL, ID_COMMON, ID_WERTPAPIER, ID_CUSIP,
+    ID_BB, ID_ITALY, ID_EXCH_SYMBOL, ID_FULL_EXCHANGE_SYMBOL, COMPOSITE_ID_BB_GLOBAL,
+    ID_BB_GLOBAL_SHARE_CLASS_LEVEL, ID_BB_SEC_NUM_DES, ID_BB_GLOBAL, TICKER,
+    ID_CUSIP_8_CHR, OCC_SYMBOL, UNIQUE_ID_FUT_OPT, OPRA_SYMBOL, TRADING_SYSTEM_IDENTIFIER
+    """
     key = None
     if 'openfigi_key' in os.environ:
         key = os.environ['openfigi_key']
+    else:
         logger.info('openfigi_key variable not present in env. Using anonymous access.')
     figi = OpenFigi(key)
     figi.enqueue_request(id_type, id_value, exchange_code, mic_code, currency)
@@ -94,8 +113,23 @@ def call_figi(id_type, id_value, exchange_code, mic_code, currency):
     click.echo(json.dumps(text, sort_keys=True, indent=4))
 
 
+def mass_fetch():
+    with open('wiki-tickers.txt', 'r') as f:
+        tickers = [ticker.strip() for ticker in f.readlines()]
+    key = None
+    if 'openfigi_key' in os.environ:
+        key = os.environ['openfigi_key']
+    figi = OpenFigi(key)
+    for ticker in tickers[:100]:
+        figi.enqueue_request(id_type='TICKER', id_value=ticker, mic_code='XNYS')
+
+    resp = figi.fetch_response()
+    click.echo(json.dumps(resp, sort_keys=True, indent=4))
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    call_figi()
+    mass_fetch()
+#    call_figi()
