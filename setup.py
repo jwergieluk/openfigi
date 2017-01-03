@@ -17,6 +17,7 @@ setup(
     url='https://github.com/jwergieluk/openfigi',
     license=license,
     packages=find_packages(),
+    install_requires=['requests', 'click'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
