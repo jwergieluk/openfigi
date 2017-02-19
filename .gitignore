@@ -3,3 +3,5 @@ venv
 openfigi.egg-info
 openfigi/__pycache__
 __pycache__
+dist
+build
