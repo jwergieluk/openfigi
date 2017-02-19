@@ -9,7 +9,7 @@ with open('LICENSE') as f:
 
 setup(
     name='openfigi',
-    version='0.0.1',
+    version='0.0.3',
     description='A simple wrapper for openfigi.com',
     long_description=readme,
     author='Julian Wergieluk',
