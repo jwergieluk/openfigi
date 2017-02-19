@@ -48,3 +48,8 @@ Sample call:
 
 The cli tool searches for 'openfigi_key' environment variable and uses it to
 authenticate. If this fails, an anonymous access is used. 
+
+#### Trademarks
+
+'OPENFIGI', 'BLOOMBERG', 'BLOOMBERG.COM' are trademarks and service marks of
+Bloomberg Finance L.P., a Delaware limited partnership, or its subsidiaries.
