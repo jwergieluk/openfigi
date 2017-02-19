@@ -16,9 +16,9 @@ root_logger.addHandler(console)
 @click.command()
 @click.argument('id_type')
 @click.argument('id_value')
-@click.option('--exchange_code', default='', help='An optional exchange code if it applies(cannot use with mic_code).')
+@click.option('--exchange_code', default='', help='An optional exchange code if it applies (cannot use with mic_code).')
 @click.option('--mic_code', default='',
-              help='An optional ISO market identification code(MIC) if it applies(cannot use with exchange_code).')
+              help='An optional ISO market identification code(MIC) if it applies (cannot use with exchange_code).')
 @click.option('--currency', default='', help='An optional currency if it applies.')
 def call_figi(id_type, id_value, exchange_code, mic_code, currency):
     """
@@ -34,23 +34,9 @@ def call_figi(id_type, id_value, exchange_code, mic_code, currency):
     if 'openfigi_key' in os.environ:
         key = os.environ['openfigi_key']
     else:
-        root_logger.info('openfigi_key variable not present in env. Using anonymous access.')
+        root_logger.info('openfigi_key variable not present in the environment. Using anonymous access.')
     figi = OpenFigi(key)
     figi.enqueue_request(id_type, id_value, exchange_code, mic_code, currency)
     text = figi.fetch_response()
     click.echo(json.dumps(text, sort_keys=True, indent=4))
-
-
-def mass_fetch():
-    with open('wiki-tickers.txt', 'r') as f:
-        tickers = [ticker.strip() for ticker in f.readlines()]
-    key = None
-    if 'openfigi_key' in os.environ:
-        key = os.environ['openfigi_key']
-    figi = OpenFigi(key)
-    for ticker in tickers[:100]:
-        figi.enqueue_request(id_type='TICKER', id_value=ticker, mic_code='XNYS')
-
-    resp = figi.fetch_response()
-    click.echo(json.dumps(resp, sort_keys=True, indent=4))
 

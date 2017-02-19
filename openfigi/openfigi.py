@@ -1,7 +1,6 @@
-import requests
 import logging
-import os
-import json
+import requests
+import time
 
 
 class OpenFigi:
@@ -31,7 +30,8 @@ class OpenFigi:
         self.url = 'https://api.openfigi.com/v1/mapping'
         self.api_key = key
         self.headers = {'Content-Type': 'text/json', 'X-OPENFIGI-APIKEY': key}
-        self.data = []
+        self.request_items = []
+        self.response_items = []
         self.max_tickers_per_request = 100
 
     def enqueue_request(self, id_type, id_value, exchange_code='', mic_code='', currency=''):
@@ -46,10 +46,10 @@ class OpenFigi:
         if len(currency) > 0:
             query['currency'] = currency
 
-        self.data.append(query)
+        self.request_items.append(query)
 
-    def fetch_response(self):
-        response = requests.post(self.url, json=self.data, headers=self.headers)
+    def get_batch(self, batch_request_items):
+        response = requests.post(self.url, json=batch_request_items, headers=self.headers)
         try:
             response.raise_for_status()
         except requests.HTTPError:
@@ -71,12 +71,26 @@ class OpenFigi:
                 self.logger.error('Internal Server Error.')
             return None
 
-        response_list = response.json()
-        if len(response_list) == len(self.data):
-            for (i, item) in enumerate(response_list):
-                item.update(self.data[i])
+        batch_response_items = response.json()
+        if len(batch_response_items) == len(batch_request_items):
+            for (i, item) in enumerate(batch_response_items):
+                item.update(batch_request_items[i])
         else:
-            self.logger.warning('Number of request and response items do not match. Dumping results only.')
+            self.logger.warning('Number of request and response items do not match. Dumping the results only.')
+        self.response_items += batch_response_items
 
-        self.data.clear()
-        return response_list
+    def fetch_response(self):
+        """ Partitions the requests into batches and attempts to get responses.
+
+            See https://www.openfigi.com/api#rate-limiting for a detailed explanation.
+        """
+        if len(self.request_items) < 100:
+            self.get_batch(self.request_items)
+        else:
+            self.get_batch(self.request_items[-100:])
+            self.request_items = self.request_items[:-100]
+            time.sleep(0.6)
+            self.fetch_response()
+
+        self.request_items.clear()
+        return self.response_items

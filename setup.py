@@ -23,5 +23,5 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3'
     ],
-    entry_points={'console_scripts': ['sdb = openfigi.openfigi:cli']}
+    entry_points={'console_scripts': ['ofg = openfigi.__main__:call_figi']}
 )
