@@ -2,7 +2,7 @@
 
 Simple wrapper and a command-line tool for Bloomberg's OpenFIGI API.
 
-The API specification is located under [https://www.openfigi.com/api].
+The API specification is located under https://www.openfigi.com/api
 
 ## Usage
 
