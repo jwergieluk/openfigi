@@ -14,7 +14,7 @@ The API specification is located under https://www.openfigi.com/api
 ## Cli usage
 
     $ ofg --help
-    Usage: openfigi.py [OPTIONS] ID_TYPE ID_VALUE
+    Usage: ofg [OPTIONS] ID_TYPE ID_VALUE
     
     Options:
       --exchange_code TEXT  An optional exchange code if it applies(cannot use
