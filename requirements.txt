@@ -1,2 +1,5 @@
 click==6.6
+pip2pi==0.6.8
 requests==2.12.4
+twine==1.8.1
+wheel==0.29.0
