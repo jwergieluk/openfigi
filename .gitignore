@@ -1,2 +1,5 @@
 venv
 .idea
+openfigi.egg-info
+openfigi/__pycache__
+__pycache__

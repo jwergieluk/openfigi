@@ -13,7 +13,7 @@ The API specification is located under [https://www.openfigi.com/api].
 
 ## Cli usage
 
-    $ openfigi.py --help
+    $ ofg --help
     Usage: openfigi.py [OPTIONS] ID_TYPE ID_VALUE
     
     Options:
@@ -26,7 +26,7 @@ The API specification is located under [https://www.openfigi.com/api].
 
 Sample call:
 
-    $ openfigi.py --mic_code EUWX ID_WERTPAPIER XM91CQ
+    $ ofg --mic_code EUWX ID_WERTPAPIER XM91CQ
     [
         {
             "data": [
@@ -46,10 +46,16 @@ Sample call:
         }
     ]
 
-The cli tool searches for 'openfigi_key' environment variable and uses it to
-authenticate. If this fails, an anonymous access is used. 
+The cli tool searches for the `openfigi_key` environment variable and uses it to
+authenticate the API calls. If `openfigi_key` is not defined, an anonymous access is used.
 
 #### Trademarks
 
-'OPENFIGI', 'BLOOMBERG', 'BLOOMBERG.COM' are trademarks and service marks of
+'OPENFIGI', 'BLOOMBERG', and 'BLOOMBERG.COM' are trademarks and service marks of
 Bloomberg Finance L.P., a Delaware limited partnership, or its subsidiaries.
+
+#### Copyright and license
+
+MIT License: see LICENSE file for details.
+
+Copyright (c) 2016-2017 Julian Wergieluk
