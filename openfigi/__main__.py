@@ -16,11 +16,12 @@ root_logger.addHandler(console)
 @click.command()
 @click.argument('id_type', nargs=1)
 @click.argument('id_values', nargs=-1)
-@click.option('--exchange_code', default='', help='An optional exchange code if it applies (cannot use with mic_code).')
-@click.option('--mic_code', default='',
+@click.option('--exchange-code', default='', help='An optional exchange code if it applies (cannot use with mic_code).')
+@click.option('--mic-code', default='',
               help='An optional ISO market identification code(MIC) if it applies (cannot use with exchange_code).')
 @click.option('--currency', default='', help='An optional currency if it applies.')
-def call_figi(id_type, id_values, exchange_code, mic_code, currency):
+@click.option('--remove-missing/--no-remove-missing', default=False, help='Remove records with errors.')
+def call_figi(id_type, id_values, exchange_code, mic_code, currency, remove_missing):
     """
     Calls OpenFIGI API with the specified arguments
 
@@ -40,6 +41,6 @@ def call_figi(id_type, id_values, exchange_code, mic_code, currency):
     figi = OpenFigi(key)
     for id_value in id_values:
         figi.enqueue_request(id_type.upper(), id_value, exchange_code.upper(), mic_code.upper(), currency.upper())
-    text = figi.fetch_response()
+    text = figi.fetch_response(remove_missing)
     click.echo(json.dumps(text, sort_keys=True, indent=4))
 

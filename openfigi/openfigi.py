@@ -48,7 +48,7 @@ class OpenFigi:
 
         self.request_items.append(query)
 
-    def get_batch(self, batch_request_items):
+    def get_batch(self, batch_request_items, remove_missing=False):
         response = requests.post(self.url, json=batch_request_items, headers=self.headers)
         try:
             response.raise_for_status()
@@ -77,20 +77,25 @@ class OpenFigi:
                 item.update(batch_request_items[i])
         else:
             self.logger.warning('Number of request and response items do not match. Dumping the results only.')
-        self.response_items += batch_response_items
+        if remove_missing:
+            for item in batch_response_items:
+                if 'error' not in item.keys():
+                    self.response_items.append(item)
+        else:
+            self.response_items += batch_response_items
 
-    def fetch_response(self):
+    def fetch_response(self, remove_missing=False):
         """ Partitions the requests into batches and attempts to get responses.
 
             See https://www.openfigi.com/api#rate-limiting for a detailed explanation.
         """
         if len(self.request_items) < 100:
-            self.get_batch(self.request_items)
+            self.get_batch(self.request_items, remove_missing)
         else:
-            self.get_batch(self.request_items[-100:])
+            self.get_batch(self.request_items[-100:], remove_missing)
             self.request_items = self.request_items[:-100]
             time.sleep(0.6)
-            self.fetch_response()
+            self.fetch_response(remove_missing)
 
         self.request_items.clear()
         return self.response_items
