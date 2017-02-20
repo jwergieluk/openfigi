@@ -13,14 +13,25 @@ The API specification is located under https://www.openfigi.com/api
 
 ## Cli usage
 
-    $ ofg --help
-    Usage: ofg [OPTIONS] ID_TYPE ID_VALUE
-    
+    > ofg --help
+    Usage: ofg [OPTIONS] ID_TYPE [ID_VALUES]...
+
+      Calls OpenFIGI API with the specified arguments
+
+      ID_TYPE must be one of the following: ID_ISIN, ID_BB_UNIQUE, ID_SEDOL,
+      ID_COMMON, ID_WERTPAPIER, ID_CUSIP, ID_BB, ID_ITALY, ID_EXCH_SYMBOL,
+      ID_FULL_EXCHANGE_SYMBOL, COMPOSITE_ID_BB_GLOBAL,
+      ID_BB_GLOBAL_SHARE_CLASS_LEVEL, ID_BB_SEC_NUM_DES, ID_BB_GLOBAL, TICKER,
+      ID_CUSIP_8_CHR, OCC_SYMBOL, UNIQUE_ID_FUT_OPT, OPRA_SYMBOL,
+      TRADING_SYSTEM_IDENTIFIER
+
+      ID_VALUES is a list of (space separated) id corresponding to ID_TYPE.
+
     Options:
-      --exchange_code TEXT  An optional exchange code if it applies(cannot use
+      --exchange_code TEXT  An optional exchange code if it applies (cannot use
                             with mic_code).
       --mic_code TEXT       An optional ISO market identification code(MIC) if it
-                            applies(cannot use with exchange_code).
+                            applies (cannot use with exchange_code).
       --currency TEXT       An optional currency if it applies.
       --help                Show this message and exit.
 
