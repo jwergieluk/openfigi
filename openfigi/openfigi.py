@@ -48,7 +48,7 @@ class OpenFigi:
 
         self.request_items.append(query)
 
-    def get_batch(self, batch_request_items, remove_missing=False):
+    def __get_batch(self, batch_request_items, remove_missing=False):
         response = requests.post(self.url, json=batch_request_items, headers=self.headers)
         try:
             response.raise_for_status()
@@ -90,9 +90,9 @@ class OpenFigi:
             See https://www.openfigi.com/api#rate-limiting for a detailed explanation.
         """
         if len(self.request_items) < 100:
-            self.get_batch(self.request_items, remove_missing)
+            self.__get_batch(self.request_items, remove_missing)
         else:
-            self.get_batch(self.request_items[-100:], remove_missing)
+            self.__get_batch(self.request_items[-100:], remove_missing)
             self.request_items = self.request_items[:-100]
             time.sleep(0.6)
             self.fetch_response(remove_missing)
