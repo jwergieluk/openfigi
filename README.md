@@ -6,10 +6,13 @@ The API specification is located at https://www.openfigi.com/api
 
 ## Usage
 
-    import openfigi
-    openfigi = OpenFigi('abcdefghijklmnopqrstuvwxyz')
-    openfigi.enqueue_request(id_type='ID_WERTPAPIER', id_value='XM91CQ', mic_code='EUWX')
-    print(openfigi.fetch_responce())
+    >>> import openfigi
+    >>> 
+    >>> conn = openfigi.OpenFigi("32577205-8353-4cb9-b11e-3b9bbfd1fde2")
+    >>> conn.enqueue_request(id_type='ID_WERTPAPIER', id_value='XM91CQ', mic_code='EUWX')
+    >>> print(conn.fetch_response())
+    [{'idValue': 'XM91CQ', 'micCode': 'EUWX', 'idType': 'ID_WERTPAPIER', 'data': [{'shareClassFIGI': None, 'uniqueIDFutOpt': None, 'uniqueID': 'EQ0000000047042754', 'name': 'DEUTSCH-PW17 DAX INDEX', 'figi': 'BBG00BP732P7', 'exchCode': 'GW', 'marketSector': 'Equity', 'securityType': 'Index WRT', 'ticker': 'XM91CQ', 'securityType2': 'Warrant', 'securityDescription': 'XM91CQ', 'compositeFIGI': 'BBG00BP73295'}]}]
+
 
 ## Cli usage
 
