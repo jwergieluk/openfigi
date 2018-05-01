@@ -10,6 +10,7 @@ class OpenFigi:
                 'ID_COMMON': 'Common Code',
                 'ID_WERTPAPIER': 'Wertpapierkennnummer/WKN',
                 'ID_CUSIP': 'CUSIP',
+                'ID_CINS': 'CINS - CUSIP International Numbering System',
                 'ID_BB': 'ID BB',
                 'ID_ITALY': 'Italian Identifier Number',
                 'ID_EXCH_SYMBOL': 'Local Exchange Security Symbol',
