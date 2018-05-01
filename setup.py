@@ -5,7 +5,7 @@ with open('LICENSE') as f:
 
 setup(
     name='openfigi',
-    version='0.0.7',
+    version='0.0.8',
     description='A simple wrapper for openfigi.com',
     author='Julian Wergieluk',
     author_email='julian@wergieluk.com',
