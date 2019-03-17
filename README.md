@@ -4,6 +4,18 @@ Simple wrapper and a command-line tool for Bloomberg's OpenFIGI API.
 
 The API specification is located at https://www.openfigi.com/api
 
+## Installation
+
+Execute
+
+    pip install openfigi
+
+or clone this repository and install the package directly from disk:
+
+    git clone https://github.com/jwergieluk/openfigi.git
+    cd openfigi
+    pip install .
+
 ## Usage
 
     >>> import openfigi
@@ -63,12 +75,12 @@ Sample call:
 The cli tool searches for the `openfigi_key` environment variable and uses it to
 authenticate the API calls. If `openfigi_key` is not defined, an anonymous access is used.
 
-#### Trademarks
+## Trademarks
 
 'OPENFIGI', 'BLOOMBERG', and 'BLOOMBERG.COM' are trademarks and service marks of
 Bloomberg Finance L.P., a Delaware limited partnership, or its subsidiaries.
 
-#### Copyright and license
+## Copyright and license
 
 MIT License: see LICENSE file for details.
 
