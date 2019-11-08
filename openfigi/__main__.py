@@ -1,4 +1,4 @@
-from openfigi import OpenFigi
+from openfigi import OpenFigi, BASE_URLS
 import click
 import logging
 import os
@@ -21,7 +21,9 @@ root_logger.addHandler(console)
               help='An optional ISO market identification code(MIC) if it applies (cannot use with exchange_code).')
 @click.option('--currency', default='', help='An optional currency if it applies.')
 @click.option('--remove-missing/--no-remove-missing', default=False, help='Remove records with errors.')
-def call_figi(id_type, id_values, exchange_code, mic_code, currency, remove_missing):
+@click.option('--api-version', default='V1', help="The OpenFIGI API version to utilize.", 
+              type=click.Choice(list(BASE_URLS.keys())))
+def call_figi(id_type, id_values, exchange_code, mic_code, currency, remove_missing, api_version):
     """
     Calls OpenFIGI API with the specified arguments
 
@@ -38,7 +40,7 @@ def call_figi(id_type, id_values, exchange_code, mic_code, currency, remove_miss
         key = os.environ['openfigi_key']
     else:
         root_logger.info('openfigi_key variable not present in the environment. Using anonymous access.')
-    figi = OpenFigi(key)
+    figi = OpenFigi(key, api_version=api_version)
     for id_value in id_values:
         figi.enqueue_request(id_type.upper(), id_value, exchange_code.upper(), mic_code.upper(), currency.upper())
     text = figi.fetch_response(remove_missing)
