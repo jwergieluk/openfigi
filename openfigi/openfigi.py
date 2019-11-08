@@ -3,6 +3,12 @@ import requests
 import time
 
 
+BASE_URLS = {
+    "V1": "https://api.openfigi.com/v1/mapping",
+    "V2": "https://api.openfigi.com/v2/mapping"
+}
+
+
 class OpenFigi:
     id_types = {'ID_ISIN': 'ISIN',
                 'ID_BB_UNIQUE': 'Unique Bloomberg Identifier',
@@ -26,9 +32,14 @@ class OpenFigi:
                 'OPRA_SYMBOL': 'OPRA Symbol',
                 'TRADING_SYSTEM_IDENTIFIER': 'Trading System Identifier'}
 
-    def __init__(self, key=None):
+    def __init__(self, key=None, api_version="V1"):
         self.logger = logging.getLogger(__name__)
-        self.url = 'https://api.openfigi.com/v1/mapping'
+        if api_version not in BASE_URLS:
+            raise ValueError(
+                "Unsupported API version. Supported versions: {0}"
+                "".format(", ".join(BASE_URLS.keys()))
+            )
+        self.url = BASE_URLS[api_version]
         self.api_key = key
         self.headers = {'Content-Type': 'text/json', 'X-OPENFIGI-APIKEY': key}
         self.request_items = []

@@ -1,1 +1,1 @@
-from .openfigi import OpenFigi
+from .openfigi import OpenFigi, BASE_URLS

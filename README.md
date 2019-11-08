@@ -45,14 +45,15 @@ or clone this repository and install the package directly from disk:
     Options:
       --exchange_code TEXT  An optional exchange code if it applies (cannot use
                             with mic_code).
-      --mic_code TEXT       An optional ISO market identification code(MIC) if it
+      --mic-code TEXT       An optional ISO market identification code(MIC) if it
                             applies (cannot use with exchange_code).
+      --api-version [V1|V2] The OpenFIGI API version to utilize.
       --currency TEXT       An optional currency if it applies.
       --help                Show this message and exit.
 
 Sample call:
 
-    $ ofg --mic_code EUWX ID_WERTPAPIER XM91CQ
+    $ ofg --mic-code EUWX ID_WERTPAPIER XM91CQ
     [
         {
             "data": [
