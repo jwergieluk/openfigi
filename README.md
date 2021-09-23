@@ -30,26 +30,30 @@ or clone this repository and install the package directly from disk:
 
     > ofg --help
     Usage: ofg [OPTIONS] ID_TYPE [ID_VALUES]...
-
-      Calls OpenFIGI API with the specified arguments
-
-      ID_TYPE must be one of the following: ID_ISIN, ID_BB_UNIQUE, ID_SEDOL,
-      ID_COMMON, ID_WERTPAPIER, ID_CUSIP, ID_CINS, ID_BB, ID_ITALY, ID_EXCH_SYMBOL,
-      ID_FULL_EXCHANGE_SYMBOL, COMPOSITE_ID_BB_GLOBAL,
-      ID_BB_GLOBAL_SHARE_CLASS_LEVEL, ID_BB_SEC_NUM_DES, ID_BB_GLOBAL, TICKER,
-      ID_CUSIP_8_CHR, OCC_SYMBOL, UNIQUE_ID_FUT_OPT, OPRA_SYMBOL,
-      TRADING_SYSTEM_IDENTIFIER
-
-      ID_VALUES is a list of (space separated) id corresponding to ID_TYPE.
-
+    
+      Calls OpenFIGI API
+    
+      ID_TYPE must be one of the following: BASE_TICKER COMPOSITE_ID_BB_GLOBAL
+      ID_BB ID_BB_8_CHR ID_BB_GLOBAL ID_BB_GLOBAL_SHARE_CLASS_LEVEL
+      ID_BB_SEC_NUM_DES ID_BB_UNIQUE ID_CINS ID_COMMON ID_CUSIP ID_CUSIP_8_CHR
+      ID_EXCH_SYMBOL ID_FULL_EXCHANGE_SYMBOL ID_ISIN ID_ITALY ID_SEDOL
+      ID_SHORT_CODE ID_TRACE ID_WERTPAPIER OCC_SYMBOL OPRA_SYMBOL TICKER
+      TRADING_SYSTEM_IDENTIFIER UNIQUE_ID_FUT_OPT
+    
+      ID_VALUES is a list of (space separated) ids corresponding to the specified
+      ID_TYPE.
+    
     Options:
-      --exchange_code TEXT  An optional exchange code if it applies (cannot use
-                            with mic_code).
-      --mic-code TEXT       An optional ISO market identification code(MIC) if it
-                            applies (cannot use with exchange_code).
-      --api-version [V1|V2] The OpenFIGI API version to utilize.
-      --currency TEXT       An optional currency if it applies.
-      --help                Show this message and exit.
+      --exchange-code TEXT            An optional exchange code if it applies
+                                      (cannot use with mic_code).
+      --mic-code TEXT                 An optional ISO market identification
+                                      code(MIC) if it applies (cannot use with
+                                      exchange_code).
+      --currency TEXT                 An optional currency if it applies.
+      --remove-missing / --no-remove-missing
+                                      Remove records with errors.
+      --api-version [V1|V2]           The OpenFIGI API version to utilize.
+      --help                          Show this message and exit.
 
 Sample call:
 
