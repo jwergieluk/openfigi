@@ -1,4 +1,2 @@
 click
 requests
-twine
-wheel
