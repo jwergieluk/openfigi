@@ -5,7 +5,7 @@ with open('LICENSE') as f:
 
 setup(
     name='openfigi',
-    version='0.0.8',
+    version='0.0.9',
     description='A simple wrapper for openfigi.com',
     author='Julian Wergieluk',
     author_email='julian@wergieluk.com',
@@ -16,7 +16,7 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3'
+        'Programming Language :: Python :: 3',
     ],
-    entry_points={'console_scripts': ['ofg = openfigi.__main__:call_figi']}
+    entry_points={'console_scripts': ['ofg = openfigi.__main__:call_figi']},
 )
