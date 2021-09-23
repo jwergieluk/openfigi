@@ -89,4 +89,4 @@ Bloomberg Finance L.P., a Delaware limited partnership, or its subsidiaries.
 
 MIT License: see LICENSE file for details.
 
-Copyright (c) 2016-2017 Julian Wergieluk
+Copyright (c) 2016-2021 Julian Wergieluk
